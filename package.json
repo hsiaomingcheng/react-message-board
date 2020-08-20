@@ -4,7 +4,8 @@
   "description": "使用React製作一個留言板",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --mode development"
+    "dev": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
