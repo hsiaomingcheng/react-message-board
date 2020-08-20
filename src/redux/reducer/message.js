@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ADD_MESSAGE } from '../action/message';
+import {ADD_MESSAGE} from '../action/message';
 
 const defaultMessage = {
     name: 'chris',

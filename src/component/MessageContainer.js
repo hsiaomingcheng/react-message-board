@@ -9,17 +9,17 @@ export default class MessageContainer extends React.Component {
     }
 
     render() {
-        const { messageList } = this.props;
+        const {messageList} = this.props;
 
         return (
             <MessageWrap>
                 {
                     messageList.map((element, index) => {
-                        return <MessageItem
+                        return <MessageItem 
                             key={index}
                             id={index}
-                            name={element.name}
-                            value={element.text}
+                            name={element.name} 
+                            value={element.text} 
                             time={element.time}
                             responseArray={element.responseArray}
                         />

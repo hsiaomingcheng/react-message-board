@@ -18,14 +18,14 @@ class Home extends React.Component {
         addMessage([...messageList, e]);
     }
 
-    render() {
-        const { messageList } = this.props;
-        return (
-            <HomeWrap>
-                <Title> React 留言板 </Title>
-                <InputBox onSubmitMessage={this.handleSumbitMessage} />
-                <MessageContainer messageList={messageList} />
-            </HomeWrap>
+    render(){
+        const {messageList} = this.props;
+        return(
+          <HomeWrap>
+            <Title> React 留言板 </Title>
+            <InputBox onSubmitMessage={this.handleSumbitMessage} />
+            <MessageContainer messageList={messageList} />
+          </HomeWrap>
         );
     }
 }

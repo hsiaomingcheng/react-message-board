@@ -38,13 +38,13 @@ class MessageItem extends React.Component {
     }
 
     handleToggleResponse() {
-        const { isShowResponse } = this.state;
-        this.setState({ isShowResponse: !isShowResponse });
+        const {isShowResponse} = this.state;
+        this.setState({isShowResponse: !isShowResponse});
     }
-
-    render() {
-        const { name, time, value, responseArray } = this.props
-        const { isShowResponse } = this.state;
+    
+    render(){
+        const {name, time, value, responseArray} = this.props
+        const {isShowResponse} = this.state;
         return (
             <MessageItemWrap>
                 <Info><span>{name}</span> 在 {time} 發佈了這則訊息</Info>
@@ -60,7 +60,7 @@ class MessageItem extends React.Component {
                         );
                     })
                 }
-
+    
                 <ResponseButton isShow={isShowResponse} onClick={this.handleToggleResponse}>發表回應</ResponseButton>
 
                 {

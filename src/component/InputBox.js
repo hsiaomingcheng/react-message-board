@@ -17,11 +17,11 @@ export default class InputBox extends React.Component {
     }
 
     handleTextChange(e) {
-        this.setState({ text: e.currentTarget.value });
+        this.setState({text: e.currentTarget.value});
     }
 
     handleNameChange(e) {
-        this.setState({ name: e.currentTarget.value });
+        this.setState({name: e.currentTarget.value});
     }
 
     handleGetTime(fmt) {
@@ -37,13 +37,13 @@ export default class InputBox extends React.Component {
         };
         if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
         for (var k in o)
-            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        if (new RegExp("(" +  k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" +  o[k]).substr(("" + o[k]).length)));
         return fmt;
     }
 
     handleSubmit() {
-        const { onSubmitMessage } = this.props;
-        const { name, text } = this.state;
+        const {onSubmitMessage} = this.props;
+        const {name, text} = this.state;
 
         if (!text) {
             return;
@@ -62,7 +62,7 @@ export default class InputBox extends React.Component {
     }
 
     render() {
-        const { name, text } = this.state;
+        const {name, text} = this.state;
         return (
             <InputBoxWrap>
                 <Textarea placeholder="在這留下你想說的話" value={text} onChange={this.handleTextChange} />
