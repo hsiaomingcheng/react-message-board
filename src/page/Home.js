@@ -15,7 +15,17 @@ class Home extends React.Component {
 
     handleSumbitMessage(e) {
         const { addMessage, messageList } = this.props;
-        addMessage([...messageList, e]);
+        addMessage([...messageList, {
+            id: Date.now(),
+            ...e,
+        }]);
+    }
+
+    componentDidMount() {
+        const { addMessage } = this.props;
+        const messageList = JSON.parse(localStorage.getItem('messageData'));
+
+        messageList && addMessage(messageList);
     }
 
     render(){

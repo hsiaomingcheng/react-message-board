@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { addMessage } from '../redux/action/message';
 import styled from 'styled-components';
 import InputBox from '../component/InputBox';
+import MessageAtom from '../component/MessageAtom';
 
 class MessageItem extends React.Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class MessageItem extends React.Component {
 
         this.handleSumbitMessage = this.handleSumbitMessage.bind(this);
         this.handleToggleResponse = this.handleToggleResponse.bind(this);
+        this.handleEditMessage = this.handleEditMessage.bind(this);
     }
 
     handleSumbitMessage(e) {
@@ -21,11 +23,12 @@ class MessageItem extends React.Component {
 
         const cloneMessageList = Object.assign([], messageList);
 
-        cloneMessageList.find((element, index) => {
-            if (id === index) {
+        cloneMessageList.find((element) => {
+            if (id === element.id) {
                 element.responseArray = [
                     ...element.responseArray,
                     {
+                        id: Date.now(),
                         name: e.name,
                         text: e.text,
                         time: e.time,
@@ -41,21 +44,45 @@ class MessageItem extends React.Component {
         const {isShowResponse} = this.state;
         this.setState({isShowResponse: !isShowResponse});
     }
+
+    handleEditMessage(e, isChild, id) {
+        const { addMessage, messageList } = this.props;
+
+        const cloneMessageList = Object.assign([], messageList);
+
+        if (isChild) {
+            cloneMessageList.map(list => {
+                list.responseArray.find(childList => {
+                    if (id === childList.id) {
+                        childList.text = e.text;
+                        childList.time = e.time;
+                    }
+                });
+            });
+        } else {
+            cloneMessageList.find(list => {
+                if (id === list.id) {
+                    list.text = e.text;
+                    list.time = e.time;
+                }
+            });
+        }
+
+        addMessage(cloneMessageList);
+    }
     
     render(){
-        const {name, time, value, responseArray} = this.props
+        const {responseArray, name, time, value, id} = this.props
         const {isShowResponse} = this.state;
         return (
             <MessageItemWrap>
-                <Info><span>{name}</span> 在 {time} 發佈了這則訊息</Info>
-                <Message>{value}</Message>
+                <MessageAtom id={id} name={name} time={time} value={value} onSubmitMessage={this.handleEditMessage} />
 
                 {
                     responseArray && responseArray.map((element, index) => {
                         return (
                             <ResponseMessage key={index}>
-                                <Info><span>{element.name}</span> 在 {element.time} 回覆了這則訊息</Info>
-                                <Message>{element.text}</Message>
+                                <MessageAtom id={element.id} name={element.name} time={element.time} value={element.text} onSubmitMessage={this.handleEditMessage} isChild={true} />
                             </ResponseMessage>
                         );
                     })
@@ -64,7 +91,7 @@ class MessageItem extends React.Component {
                 <ResponseButton isShow={isShowResponse} onClick={this.handleToggleResponse}>發表回應</ResponseButton>
 
                 {
-                    isShowResponse && <InputBox onSubmitMessage={this.handleSumbitMessage} />
+                    isShowResponse && <InputBox isShowInputBox={this.handleToggleResponse} onSubmitMessage={this.handleSumbitMessage} />
                 }
             </MessageItemWrap>
         );
@@ -102,23 +129,6 @@ const ResponseButton = styled.div`
 
 const ResponseMessage = styled.div`
     margin: 5px 0 0 40px;
-`;
-
-const Info = styled.p`
-    color: #666;
-    font-size: 14px;
-
-    span {
-        color: #00A0E9;
-        font-weight: bold;
-    }
-`;
-
-const Message = styled.pre`
-    margin: 0;
-    padding: 10px 0;
-    color: #303233;
-    font-size: 16px;
 `;
 
 const MessageItemWrap = styled.div`

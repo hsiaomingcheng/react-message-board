@@ -42,7 +42,7 @@ export default class InputBox extends React.Component {
     }
 
     handleSubmit() {
-        const {onSubmitMessage} = this.props;
+        const {isShowInputBox, onSubmitMessage, isReset, isChild, id} = this.props;
         const {name, text} = this.state;
 
         if (!text) {
@@ -54,24 +54,44 @@ export default class InputBox extends React.Component {
             text,
             time: this.handleGetTime('yyyy-MM-dd hh:mm:ss'),
             responseArray: [],
-        });
+        }, isChild, id);
+
+        // isReset，按下送出後需要將name跟text清空，除了編輯訊息
+        if (isReset) {
+            this.setState({
+                name: '',
+                text: ''
+            });
+        }
+
+        // 控制編輯訊息的輸入框狀態
+        isShowInputBox && isShowInputBox();
+    }
+
+    componentDidMount() {
         this.setState({
-            name: '',
-            text: ''
+            name: this.props.propsName || '',
+            text: this.props.propsValue || '',
         });
     }
 
     render() {
+        const {propsName} = this.props;
         const {name, text} = this.state;
         return (
             <InputBoxWrap>
                 <Textarea placeholder="在這留下你想說的話" value={text} onChange={this.handleTextChange} />
-                <Nickname type="text" placeholder="您的大名" value={name} onChange={this.handleNameChange} />
+                <Nickname type="text" placeholder="您的大名" value={name} onChange={this.handleNameChange} disabled={propsName} />
                 <Submit onClick={this.handleSubmit}>確認送出</Submit>
             </InputBoxWrap>
         );
     }
 }
+
+InputBox.defaultProps = {
+    isReset: true,
+    isChild: false,
+};
 
 const Submit = styled.button`
     border: none;

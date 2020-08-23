@@ -17,7 +17,7 @@ export default class MessageContainer extends React.Component {
                     messageList.map((element, index) => {
                         return <MessageItem 
                             key={index}
-                            id={index}
+                            id={element.id}
                             name={element.name} 
                             value={element.text} 
                             time={element.time}
